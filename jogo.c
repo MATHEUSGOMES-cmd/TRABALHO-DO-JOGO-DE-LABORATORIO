@@ -7,30 +7,35 @@
 #include <stdlib.h>
 #include "jogo.h"
 
-/*
-O mapa desenhado aqui vai ser carregado no jogo, lista doque cada coisa significa:
-# = parede
-. = chão
-~ = água
-T = árvore
-P = jogador
-E = inimigo
+ /*
+ O mapa desenhado aqui vai ser carregado no jogo, lista doque cada coisa significa:
+ # = parede
+ . = chão
+ ~ = água
+ T = árvore
+ P = jogador
+ E = inimigo
+ I = item
 
-AVISO: no jogo.h ta dizendo a altura e largura do mapa, se for mudar esses dois vão ter que mecher la também
- */
+ AVISO: no jogo.h ta dizendo a altura e largura do mapa, se for mudar esses dois vão ter que mecher la também
+  */
 char MAPA_TXT[ALTURA][LARGURA + 1] = {
-    "##############################",
-    "#P..........~~~~........T....#",
-    "#...........~~~~.............#",
-    "#...T.......~~~...........E..#",
-    "#............................#",
-    "#.............TT.............#",
-    "#............................#",
-    "#...~~~......................#",
-    "#...~~~.E....................#",
-    "#.T.....................T....#",
-    "#............................#",
-    "##############################",
+    /*lembrete: atualmente x=30 e y=12
+    y = 12
+    ^
+    |
+    |____> x=30
+    */
+    "P..........~~~~....T....",
+    "...........~~~~.........",
+    "...T.......~~~.......E..",
+    "........................",
+    ".....I.......TT.........",
+    "........................",
+    "...~~~.......I..........",
+    "...~~~.E................",
+    ".T.................T....",
+    "........................",
 };
 
 int criarJogo(Jogo *jogo) {
@@ -42,6 +47,11 @@ int criarJogo(Jogo *jogo) {
     jogo->jogador.x = 1;
     jogo->jogador.y = 1;
     jogo->jogador.vida = 3;
+    jogo->jogador.vida_maxima = 5;
+    jogo->jogador.energia = 3;
+    jogo->jogador.energia_maxima = 5;
+    jogo->tempo = 0;
+
 
     /* conta o número de inimigos no desenho */
     for (int linha = 0; linha < ALTURA; linha++) {
@@ -53,12 +63,12 @@ int criarJogo(Jogo *jogo) {
     }
 
     /* aloca memoria */
-    jogo->mapa = (char**) malloc(ALTURA * sizeof(char*));
+    jogo->mapa = (char **)malloc(ALTURA * sizeof(char *));
     if (jogo->mapa == NULL) {
         return 0;
     }
     for (int linha = 0; linha < ALTURA; linha++) {
-        jogo->mapa[linha] = (char*) malloc(LARGURA * sizeof(char));
+        jogo->mapa[linha] = (char *)malloc(LARGURA * sizeof(char));
         if (jogo->mapa[linha] == NULL) {
             for (int indice = 0; indice < linha; indice++) {
                 free(jogo->mapa[indice]);   /* desfaz as linhas já criadas */
@@ -71,7 +81,7 @@ int criarJogo(Jogo *jogo) {
 
     /* alocar os inimigos como vetor */
     if (jogo->qtdInimigos > 0) {
-        jogo->inimigos = (Entidade*) malloc(jogo->qtdInimigos * sizeof(Entidade));
+        jogo->inimigos = (Entidade *)malloc(jogo->qtdInimigos * sizeof(Entidade));
         if (jogo->inimigos == NULL) {
             liberarJogo(jogo);
             return 0;
@@ -121,7 +131,7 @@ int podeAndar(Jogo *jogo, int x, int y) {
         return 0;
     }
     char simbolo = jogo->mapa[y][x];
-    if (simbolo == '#' || simbolo == '~' || simbolo == 'T') {
+    if (simbolo == '#' || simbolo == '@' || simbolo == '~' || simbolo == 'T') {
         return 0;
     }
     return 1;
@@ -149,5 +159,5 @@ void moverJogador(Jogo *jogo, int dx, int dy) {
     jogo->jogador.x = novoX;
     jogo->jogador.y = novoY;
     jogo->mensagem = " ";
-
+    jogo->tempo += 1;
 }
