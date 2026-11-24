@@ -18,7 +18,7 @@ Inclusive isso já estava na função limpar tela, pois tinha começado a implem
 #define COR_VERMELHO "\x1b[38;5;209m"
 #define COR_VERMELHO_CLARO "\x1b[38;5;160m"
 #define COR_BRANCO "\x1b[1;37m"
-#define COR_ENERGIA "\x1b[38;5;222m"
+#define COR_AMARELO "\x1b[38;5;222m"
 
 
 #define PAREDE ""COR_CINZA "║" RESET""
@@ -26,7 +26,7 @@ Inclusive isso já estava na função limpar tela, pois tinha começado a implem
 #define CHAO ""COR_ESCURO "░ " RESET""
 #define AGUA ""COR_AZUL "≋ " RESET""
 #define ARVORE ""COR_VERDE "✿ " RESET""
-
+#define ITEM ""COR_AMARELO "✦ " RESET""
 #define INIMIGO ""COR_VERMELHO "☠ " RESET""
 #define JOGADOR ""COR_CIANO "● " RESET""
 
@@ -40,6 +40,7 @@ void desenharTile(char simbolo) {
         case '.': printf(CHAO); break; /* chão */
         case '~': printf(AGUA); break; /* água */
         case 'T': printf(ARVORE); break; /* árvore */
+        case 'I': printf(ITEM); break; /* item */
         default:  printf("  "); break; /* vazio */
     }
 }
@@ -103,7 +104,7 @@ void desenharJogo(Jogo *jogo) {
         printf("■");
     }
     escolherBoca(jogo->tempo);
-    printf(COR_ENERGIA" ❖  ");
+    printf(COR_AMARELO" ❖  ");
     for (int indice = 0; indice < jogo->jogador.energia_maxima; indice++) {
         if (jogo->jogador.energia == indice) {
             printf(RESET);
