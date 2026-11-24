@@ -17,7 +17,6 @@ void jogar() {
         printf("Erro: memória insuficiente!\n");
         return;
     }
-
     while (jogo.jogador.vida != 0) {
         desenharJogo(&jogo);
         printf(" Comando (w/a/s/d, q = menu): ");
@@ -31,9 +30,9 @@ void jogar() {
         /* aqui é só pra pessoa usar wasd pra andar que nem jogo */
         switch (comando) {
             case 'w': case 'W': dy = -1; break;
-            case 's': case 'S': dy =  1; break;
+            case 's': case 'S': dy = 1; break;
             case 'a': case 'A': dx = -1; break;
-            case 'd': case 'D': dx =  1; break;
+            case 'd': case 'D': dx = 1; break;
             case 'q': case 'Q': break;
             default: jogo.mensagem = "Comando inválido!";
         }

@@ -6,17 +6,21 @@
 #ifndef JOGO_H
 #define JOGO_H
 
-#define LARGURA 30
-#define ALTURA 12
+#define LARGURA 24
+#define ALTURA 10
 
-/* mesma base pro jogar e inimigo ou qualquer ser */
+ /* mesma base pro jogar e inimigo ou qualquer ser */
 typedef struct {
     int x, y;
     int vida;
+    int vida_maxima;
+    int energia;
+    int energia_maxima;
 } Entidade;
 
 /* aqui é a estrutura do jogo*/
 typedef struct {
+    int tempo;
     char **mapa; /* o mapa é uma matriz de altura e largura que tem a posição de tudo dentro do jogo */
     Entidade jogador;
     Entidade *inimigos;
